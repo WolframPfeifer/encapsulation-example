@@ -1,4 +1,4 @@
-// ------ linked list.
+/*@ predicate payload(Object o); @*/
 
 /*@ predicate llist(LinkedCellList obj, list<Cell> ll) = 
       switch(ll) {
@@ -12,23 +12,10 @@
           };
 @*/
 
-/*@ predicate payload(Object o); @*/
-
 /*@ fixpoint list<T> addEnd<T>(T val, list<T> ll) {
       switch(ll) {
         case nil: return cons(val, ll);
         case cons(h, t): return cons(h, addEnd(val, t));
-      }
-    }
-@*/
-
-/*@ lemma void addEndNotNil<T>(T h, list<T> l) 
-    requires true;
-    ensures addEnd(h, l) != nil;
-    {
-      switch(l) {
-        case nil: return;
-        case cons(hd, tl): addEndNotNil(h, tl); return;
       }
     }
 @*/
@@ -38,35 +25,6 @@
        case nil: return null;
        case cons(h, t): return t==nil ? h : last(t);
        }
-    }
-@*/
-
-/*@
-    lemma void lastOfCons(Cell h, list<Cell> l)
-    requires l != nil;
-    ensures last(cons(h, l)) == last(l);
-    {
-    }
-@*/
-
-/*@ lemma void lastOfAddEnd(Cell h, list<Cell> l)
-    requires true;
-    ensures last(addEnd(h, l)) == h;
-    {
-      switch(l) {
-        case nil: return;
-        case cons(hd, tl): 
-          if(tl == nil) {
-          } else {
-          assert addEnd(h,l) == cons(hd, addEnd(h, tl));
-          addEndNotNil(h, tl);
-          lastOfCons(hd, addEnd(h, tl));
-          assert last(cons(hd, addEnd(h, tl))) == last(addEnd(h, tl));
-          assert last(addEnd(h,l)) == last(addEnd(h, tl));
-          lastOfAddEnd(h, tl);
-          return;
-          }
-      }
     }
 @*/
 
@@ -85,10 +43,10 @@ public class LinkedCellList {
         //@ close llist(this, cons(v, nil));
     }
 
-    public void addLast(Cell val)
+    public void add(Cell val)
         //@ requires llist(this, ?l) &*& [_]payload(val);
         //@ ensures llist(this, addEnd(val, l));
-    {    
+    {
         //@ open llist(this, l);
         if(next == null) {
             //@ open llist(this.next, _);
@@ -100,28 +58,29 @@ public class LinkedCellList {
             next = n;
             //@ close llist(this, cons(h, cons(val, nil)));
         } else {
-            next.addLast(val);
+            next.add(val);
             //@ close llist(this, addEnd(val, l));
         }
     }
     
     public Cell getLast()
-        //@ requires [?f]llist(this, ?l);
-        //@ ensures [f]llist(this, l) &*& result == last(l) &*& [_]payload(result);
+        //@ requires llist(this, ?l);
+        //@ ensures llist(this, l) &*& result == last(l) &*& [_]payload(result);
     {
         //@ open llist(this, l);
         Cell result;
         if(next == null) {
-            //@ open [f]llist(next, ?x);
-            //@ close [f]llist(next, nil);
+            //@ open llist(next, ?x);
+            //@ close llist(next, nil);
             result = this.value;
         } else {
-            //@ open [f]llist(next, ?x);
-            //@ close [f]llist(next, x);
+            //@ open llist(next, ?x);
+            //@ close llist(next, x);
             result = next.getLast();
             //@ assert last(x) == last(l);
         }
-        //@ close [f]llist(this, l);
+
+        //@ close llist(this, l);
         return result;
     }
 }

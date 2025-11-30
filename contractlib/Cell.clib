@@ -1,16 +1,21 @@
 (declare-abstractions
     ((example.Cell 0))
-    (((Cell (absVal Int)))))  ; "example.Cell" here?
+    (((Cell (absVal Int)))))
 
 (define-contract example.Cell.init
-    ((this (out example.Cell))
-     (id (in Int))
+    ((this (out Cell))
      (v (in Int)))
     ((true
      (= (absVal this) v))))
 
 (define-contract example.Cell.value
-    ((this (inout example.Cell))
+    ((this (inout Cell))
      (result (out Int)))
     ((true
      (= result (absVal this)))))
+
+(define-contract example.Cell.set
+    ((this (inout Cell))
+     (v (in Int)))
+    ((true
+     (= (absVal this) v))))

@@ -1,0 +1,20 @@
+(declare-abstractions
+    ((example.LinkedCellList 0))
+    (((LinkedCellList (absVal (Seq CellRef))))))
+
+(define-contract example.LinkedCellList.init
+    ((this (out example.LinkedCellList)))
+    ((true
+     (= (absVal this) seq.empty))))                            ; in Z3: "(as seq.empty (Seq CellRef))"
+
+(define-contract example.LinkedCellList.addLast
+    ((this (inout example.LinkedCellList))
+     (v (int CellRef)))
+    ((true
+     (= (absVal this) (seq.++ (old (absVal this)) (seq.unit v))))))
+
+(define-contract example.LinkedCellList.getLast
+    ((this (inout example.LinkedCellList))
+     (result (out CellRef)))
+    ((not (= (absVal this) seq.empty))
+     (= result (seq.nth (- (seq.len (absVal this)) 1)))))

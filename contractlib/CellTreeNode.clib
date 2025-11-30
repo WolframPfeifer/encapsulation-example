@@ -1,0 +1,23 @@
+(declare-abstractions
+    ((example.CellTreeNode 0))
+    (((CellTreeNode (absVal (Set Cell))))))
+
+(define-contract example.CellTreeNode.init
+    ((this (out CellTreeNode))
+     (v (in Cell)))
+    ((true
+     (= (absVal this) (set.singleton v)))))
+
+(define-contract example.CellTreeNode.add
+    ((this (inout CellTreeNode))
+     (v (in Cell)))
+    ((true
+     (and (forall ((x Cell)) (or (set.member x (old (absVal this))) (= x v)))
+          (set.member v (absVal this))))))
+
+(define-contract example.CellTreeNode.contains
+    ((this (in CellTreeNode))
+     (v (in Cell))
+     (result (out Bool)))
+    ((true
+     (= result (set.member v (absVal this))))))

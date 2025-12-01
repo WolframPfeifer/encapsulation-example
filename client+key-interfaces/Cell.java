@@ -1,4 +1,5 @@
-// small example of an immutable DTI class
+package example;
+
 public final class Cell {
     private int value;
 

@@ -1,41 +1,46 @@
-public final class LinkedCellList {
+package example;
 
-    /*@ datatype list {
-      @     nil()
-      @   | cons(Cell h, list tail);
-      @
-      @   int compareTo(cell this, cell o) {
-      @     return val(this) - val(o);
-      @   }
-      @
-      @   Cell last(cell this) {
-      @     return switch (this) {
-      @       case nil() -> ???   // TODO: what to do here?
-      @       case cons(h, t) -> last(t);
-      @     };
-      @   }
-      @
-      @   list snoc(list this, Cell v) {
-      @     return switch (this) {
-      @       case nil() -> cons(v, nil());
-      @       case cons(h, t) -> cons(h, snoc(t, v));
-      @     };
-      @   }
-      @ }
-      @*/
+public abstract class LinkedCellList {
 
-    //@ ghost list absVal;
+    //@ public instance ghost \locset footprint;
 
-    /*@ normal_behavior
-      @  ensures absVal == cons(v, nil());
-      @  ensures \fresh(fp);
-      @  assignable \nothing;
-      @*/
-    public LinkedCellList(Cell v) { super(v); }
 
-    //@ ensures absVal == snoc(\old(absVal), v);
-    public void addLast(Cell v) { super.addLast(v); }
+    //@ public instance invariant \subset(this.*, this.footprint);
 
-    //@ ensures \result == last(this);
-    public Cell getLast() { return super.getLast(); }
+
+    //@ public instance accessible \inv : footprint;
+
+
+    //@ public instance ghost \seq absVal;
+
+
+    //@ public instance invariant (\forall int a;0<=a<((\seq) this.absVal).length; ((\seq) this.absVal)[a] instanceof Cell);
+
+
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> \result.absVal == \seq_empty));
+        ensures \fresh(\result.footprint);
+        ensures \invariant_for(\result);
+        */
+    public static LinkedCellList init() {
+        //NOTE: This should be never called, as it is only the interface!
+        return null;
+    }
+
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> this.absVal == \seq_concat(\old(this.absVal), \seq_singleton(v))));
+        accessible this.footprint;
+        assignable this.footprint;
+        */
+    public abstract void add(Cell v);
+
+    /*@  normal_behavior
+        requires (false | this.absVal != \seq_empty);
+        ensures (true & (this.absVal != \seq_empty ==> \result == this.absVal[this.absVal.length - 1]));
+        accessible this.footprint;
+        assignable this.footprint;
+        */
+    public abstract Cell getLast();
 }

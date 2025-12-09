@@ -1,50 +1,43 @@
-import universe.qual.*;
+package example;
 
-// implementation of a set as unbalanced sorted tree
-public final class IntTreeSet {
-    private /*@ nullable */ TreeNode root;
+public abstract class IntTreeSet {
 
-    //@ public ghost \dl_Set absVal;
+    //@ public instance ghost \locset footprint;
 
-    //@ public invariant \subset(\singleton(fp), fp);
 
-    //@ public accessible \inv: fp;
+    //@ public instance invariant \subset(this.*, this.footprint);
 
-    /*@ normal_behavior
-      @  ensures absVal == \dl_sEmpty();
-      @  ensures \fresh(fp);
-      @  assignable \nothing;
-      @*/
-    IntTreeSet() {
-        //@ set absVal = \dl_sEmpty();
+
+    //@ public instance accessible \inv : footprint;
+
+
+    //@ public instance ghost \dl_Set absVal;
+
+
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> \result.absVal == \dl_sEmpty()));
+        ensures \fresh(\result.footprint);
+        ensures \invariant_for(\result);
+        */
+    public static IntTreeSet init() {
+        //NOTE: This should be never called, as it is only the interface!
+        return null;
     }
 
-    /*@ normal_behavior
-      @  ensures absVal == \dl_sUnion(\old(absVal), \dl_sSingleton(v));
-      @  assignable fp;
-      @*/
-    public void add(int v) {
-        if (root == null) {
-            root = new TreeNode(v);
-            //@ set absVal = \dl_sSingleton(v);
-            //@ assert \dl_owner(root) == this;
-        } else {
-            root.add(v);
-            //@ set absVal = \dl_sUnion(absVal, \dl_sSingleton(v));
-        }
-    }
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> (\forall int x;\dl_sElementOf(x, \old(this.absVal)) || x == v) && \dl_sElementOf(v, this.absVal)));
+        accessible this.footprint;
+        assignable this.footprint;
+        */
+    public abstract void add(int v);
 
-    /*@ normal_behavior
-      @  ensures \result <==> \dl_sElementOf(v, absVal);
-      @  assignable \strictly_nothing;
-      @  accessible fp;
-      @*/
-    @RepOnly
-    public boolean contains(int v) {
-        if (root == null) {
-            return false;
-        } else {
-            return root.contains(v);
-        }
-    }
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> \result == \dl_sElementOf(v, this.absVal)));
+        accessible this.footprint;
+        assignable this.footprint;
+        */
+    public abstract boolean contains(int v);
 }

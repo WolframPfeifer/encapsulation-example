@@ -1,45 +1,43 @@
 package example;
 
-public final class Cell {
-    private int value;
+public abstract class Cell {
 
-    //@ public ghost int absVal;
-    //@ public ghost \locset fp;
+    //@ public instance ghost \locset footprint;
 
-    //@ public invariant \subset(\singleton(fp), fp);
 
-    //@ accessible \inv: fp;
+    //@ public instance invariant \subset(this.*, this.footprint);
 
-    /*@ normal_behavior
-      @  requires true;
-      @  ensures absVal == v;
-      @  ensures \fresh(fp);
-      @  assignable \nothing;
-      @*/
-    public Cell(int v) {
-        this.value = v;
-        //@ set fp = this.*;
-        //@ set absVal = value;
+
+    //@ public instance accessible \inv : footprint;
+
+
+    //@ public instance ghost int absVal;
+
+
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> \result.absVal == 0));
+        ensures \fresh(\result.footprint);
+        ensures \invariant_for(\result);
+        */
+    public static Cell init() {
+        //NOTE: This should be never called, as it is only the interface!
+        return null;
     }
 
-    /*@ normal_behavior
-      @  requires true;
-      @  ensures \result == absVal;
-      @  assignable \strictly_nothing;
-      @  accessible fp;
-      @*/
-    public int value() {
-        return value;
-    }
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> \result == this.absVal));
+        accessible this.footprint;
+        assignable this.footprint;
+        */
+    public abstract int value();
 
-    /*@ normal_behavior
-      @  requires true;
-      @  ensures absVal == v;
-      @  ensures \new_elems_fresh(fp);
-      @  assignable fp;
-      @*/
-    public void set(int v) {
-        value = v;
-        //@ set absVal = value;
-    }
+    /*@  normal_behavior
+        requires (false | true);
+        ensures (true & (true ==> this.absVal == v));
+        accessible this.footprint;
+        assignable this.footprint;
+        */
+    public abstract void set(int v);
 }

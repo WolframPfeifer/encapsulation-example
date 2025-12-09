@@ -3,19 +3,18 @@
     (((IntTreeSet (absVal (Set Int))))))
 
 (define-contract example.IntTreeSet.init
-    ((this (out example.IntTreeSet))
-     (v (in Int)))
+    ((result (out IntTreeSet)))
     ((true
-     (= (absVal this) set.empty))))
+      (= (absVal result) set.empty))))
 
 (define-contract example.IntTreeSet.add
-    ((this (inout example.IntTreeSet))
+    ((this (inout IntTreeSet))
      (v (in Int)))
     ((true
-     (= absVal (set.union (old (absVal this)) (set.unit v))))))
+      (= (absVal this) (set.union (old (absVal this)) (set.singleton v))))))
 
 (define-contract example.IntTreeSet.contains
-    ((this (inout example.IntTreeSet))
+    ((this (inout IntTreeSet))
      (v (in Int))
      (result (out Bool)))
     ((true

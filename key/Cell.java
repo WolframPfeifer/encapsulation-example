@@ -1,49 +1,34 @@
-// small example of an immutable DTI class
-public final class Cell {
-    private int value;
+package example;
 
+public abstract class Cell {
     //@ public ghost int absVal;
-    //@ public ghost \locset fp;
-
-    //@ public invariant \subset(\singleton(fp), fp);
-
-    // coupling:
-    //@ private invariant absVal == value;
-
-    //@ private invariant fp == this.*;
-
-    //@ accessible \inv: fp;
+    //@ public ghost \locset footprint;
+    //@ public invariant \subset(this.*, this.footprint);
+    //@ public accessible \inv : footprint;
 
     /*@ normal_behavior
-      @  requires true;
-      @  ensures absVal == v;
-      @  ensures \fresh(fp);
-      @  assignable \nothing;
-      @*/
-    public Cell(int v) {
-        this.value = v;
-        //@ set fp = this.*;
-        //@ set absVal = value;
+         requires true;
+         ensures \result.absVal == 0;
+         ensures \fresh(\result.footprint);
+         ensures \invariant_for(\result);
+        */
+    public static Cell init() {
+        return new CellImpl();
     }
 
     /*@ normal_behavior
-      @  requires true;
-      @  ensures \result == absVal;
-      @  assignable \strictly_nothing;
-      @  accessible fp;
-      @*/
-    public int value() {
-        return value;
-    }
+         requires true;
+         ensures \result == this.absVal;
+         assignable this.footprint;
+         accessible this.footprint;
+        */
+    public abstract int value();
 
     /*@ normal_behavior
-      @  requires true;
-      @  ensures absVal == v;
-      @  ensures \new_elems_fresh(fp);
-      @  assignable fp;
-      @*/
-    public void set(int v) {
-        value = v;
-        //@ set absVal = value;
-    }
+         requires true;
+         ensures this.absVal == v;
+         ensures \new_elems_fresh(footprint);
+         assignable this.footprint;
+        */
+    public abstract void set(int v);
 }

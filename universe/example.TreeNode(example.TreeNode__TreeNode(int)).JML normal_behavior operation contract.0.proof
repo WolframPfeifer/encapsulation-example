@@ -164,7 +164,6 @@
  (builtin "Set Statement" (formula "6"))
  (builtin "One Step Simplification" (formula "6"))
 (rule "emptyStatement" (formula "6") (term "1"))
-(rule "emptyStatement" (formula "6") (term "1"))
 (rule "methodCallEmpty" (formula "6") (term "1"))
 (rule "blockEmpty" (formula "6") (term "1"))
 (rule "assignment_write_attribute" (formula "6"))

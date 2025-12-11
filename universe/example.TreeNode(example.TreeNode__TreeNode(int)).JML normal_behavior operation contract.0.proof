@@ -82,8 +82,8 @@
 // Proof-Obligation settings
 { 
     "class" : "de.uka.ilkd.key.proof.init.FunctionalOperationContractPO",
-    "contract" : "TreeNode[TreeNode::TreeNode(int)].JML normal_behavior operation contract.0",
-    "name" : "TreeNode[TreeNode::TreeNode(int)].JML normal_behavior operation contract.0"
+    "contract" : "example.TreeNode[example.TreeNode::TreeNode(int)].JML normal_behavior operation contract.0",
+    "name" : "example.TreeNode[example.TreeNode::TreeNode(int)].JML normal_behavior operation contract.0"
  }
 
 \proof {
@@ -239,7 +239,7 @@
             )
             (branch "Case 2"
                 (builtin "One Step Simplification" (formula "6"))
-               (rule "Class_invariant_axiom_for_TreeNode" (formula "6") (inst "v=v_1") (inst "v_0=v_0") (ifseqformula "5") (userinteraction))
+               (rule "Class_invariant_axiom_for_example_TreeNode" (formula "6") (inst "v=v_1") (inst "v_0=v_0") (ifseqformula "5") (userinteraction))
                (rule "andRight" (formula "6"))
                (branch "Case 1"
                   (rule "andRight" (formula "6"))
@@ -1726,7 +1726,7 @@
          (rule "applyEqReverse" (formula "2") (term "2,0") (ifseqformula "1"))
          (rule "hideAuxiliaryEq" (formula "1"))
          (rule "ifthenelse_split" (formula "1") (term "0"))
-         (branch "f_0 = TreeNode::$left ∧ o_0 = t_1 TRUE"
+         (branch "f_0 = example.TreeNode::$left ∧ o_0 = t_1 TRUE"
             (rule "andLeft" (formula "1"))
             (rule "applyEqReverse" (formula "4") (term "2,0") (ifseqformula "3"))
              (builtin "One Step Simplification" (formula "4") (ifInst ""  (formula "2")))
@@ -1797,11 +1797,11 @@
             (rule "eqSymm" (formula "5"))
             (rule "close" (formula "11") (ifseqformula "5"))
          )
-         (branch "f_0 = TreeNode::$left ∧ o_0 = t_1 FALSE"
+         (branch "f_0 = example.TreeNode::$left ∧ o_0 = t_1 FALSE"
             (rule "applyEqReverse" (formula "2") (term "2,0") (ifseqformula "1"))
             (rule "hideAuxiliaryEq" (formula "1"))
             (rule "ifthenelse_split" (formula "1") (term "0"))
-            (branch "f_0 = TreeNode::$right ∧ o_0 = t_1 TRUE"
+            (branch "f_0 = example.TreeNode::$right ∧ o_0 = t_1 TRUE"
                (rule "andLeft" (formula "1"))
                (rule "applyEqReverse" (formula "4") (term "2,0") (ifseqformula "3"))
                (rule "hideAuxiliaryEq" (formula "3"))
@@ -1874,11 +1874,11 @@
                (rule "applyEq" (formula "1") (term "1,0") (ifseqformula "5"))
                (rule "close" (formula "10") (ifseqformula "1"))
             )
-            (branch "f_0 = TreeNode::$right ∧ o_0 = t_1 FALSE"
+            (branch "f_0 = example.TreeNode::$right ∧ o_0 = t_1 FALSE"
                (rule "applyEqReverse" (formula "2") (term "2,0") (ifseqformula "1"))
                (rule "hideAuxiliaryEq" (formula "1"))
                (rule "ifthenelse_split" (formula "1") (term "0"))
-               (branch "f_0 = TreeNode::$value ∧ o_0 = t_1 TRUE"
+               (branch "f_0 = example.TreeNode::$value ∧ o_0 = t_1 TRUE"
                   (rule "andLeft" (formula "1"))
                   (rule "applyEqReverse" (formula "4") (term "2,0") (ifseqformula "3"))
                   (rule "hideAuxiliaryEq" (formula "3"))
@@ -1918,11 +1918,11 @@
                   (rule "applyEq" (formula "1") (term "0") (ifseqformula "3"))
                   (rule "close" (formula "8") (ifseqformula "1"))
                )
-               (branch "f_0 = TreeNode::$value ∧ o_0 = t_1 FALSE"
+               (branch "f_0 = example.TreeNode::$value ∧ o_0 = t_1 FALSE"
                   (rule "applyEqReverse" (formula "2") (term "2,0") (ifseqformula "1"))
                   (rule "hideAuxiliaryEq" (formula "1"))
                   (rule "ifthenelse_split" (formula "1") (term "0"))
-                  (branch "f_0 = TreeNode::$absVal ∧ o_0 = t_1 TRUE"
+                  (branch "f_0 = example.TreeNode::$absVal ∧ o_0 = t_1 TRUE"
                      (rule "andLeft" (formula "1"))
                      (rule "applyEqReverse" (formula "4") (term "2,0") (ifseqformula "3"))
                      (rule "hideAuxiliaryEq" (formula "3"))
@@ -1965,7 +1965,7 @@
                      (rule "eqSymm" (formula "3"))
                      (rule "close" (formula "8") (ifseqformula "3"))
                   )
-                  (branch "f_0 = TreeNode::$absVal ∧ o_0 = t_1 FALSE"
+                  (branch "f_0 = example.TreeNode::$absVal ∧ o_0 = t_1 FALSE"
                      (rule "applyEqReverse" (formula "2") (term "2,0") (ifseqformula "1"))
                      (rule "hideAuxiliaryEq" (formula "1"))
                      (rule "ifthenelse_split" (formula "1") (term "0"))

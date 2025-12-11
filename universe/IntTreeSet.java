@@ -1,54 +1,43 @@
+package example;
+
 import universe.qual.*;
 
-// implementation of a set as unbalanced sorted tree
-public final class IntTreeSet {
-    private @Rep /*@ nullable */ TreeNode root;
-
+@DSI
+public abstract class IntTreeSet {
     //@ public ghost \dl_Set absVal;
+    //@ public accessible \inv : \dl_createdRepfp(this);
 
-    //@ private invariant root == null <==> absVal == \dl_sEmpty();
-    //@ private invariant root != null ==> \invariant_for(root) && absVal == root.absVal;
-    //@ private invariant root != null ==> \disjoint(this.*, \dl_createdRepfp(root));
-
-    //@ public accessible \inv: \dl_createdRepfp(this);
-
-    /*@ normal_behavior
-      @  ensures absVal == \dl_sEmpty();
-      @  ensures \fresh(\dl_createdRepfp(this));
-      @  assignable \nothing;
-      @*/
+    // Note: needed at the moment for technical reasons, UET checker needs the annotation
     @RepOnly
-    IntTreeSet() {
-        //@ set absVal = \dl_sEmpty();
+    protected IntTreeSet() {
     }
 
     /*@ normal_behavior
-      @  ensures absVal == \dl_sUnion(\old(absVal), \dl_sSingleton(v));
-      @  assignable \dl_createdRepfp(this);
-      @*/
-    @RepOnly
-    public void add(int v) {
-        if (root == null) {
-            root = new @Rep TreeNode(v);
-            //@ set absVal = \dl_sSingleton(v);
-            //@ assert \dl_owner(root) == this;
-        } else {
-            root.add(v);
-            //@ set absVal = \dl_sUnion(absVal, \dl_sSingleton(v));
-        }
+         requires true;
+         ensures \result.absVal == \dl_sEmpty();
+         ensures \fresh(\dl_createdRepfp(\result));
+         ensures \invariant_for(\result);
+         assignable \nothing;
+        */
+    // Note: static methods do not have to adhere to @RepOnly/@Payload restrictions, @Peer is default
+    public static IntTreeSet init() {
+        return new IntTreeSetImpl();
     }
 
     /*@ normal_behavior
-      @  ensures \result <==> \dl_sElementOf(v, absVal);
-      @  assignable \strictly_nothing;
-      @  accessible \dl_createdRepfp(this);
-      @*/
+         requires true;
+         ensures absVal == \dl_sUnion(\old(absVal), \dl_sSingleton(v));
+         assignable \dl_createdRepfp(this);
+        */
     @RepOnly
-    public boolean contains(int v) {
-        if (root == null) {
-            return false;
-        } else {
-            return root.contains(v);
-        }
-    }
+    public abstract void add(int v);
+
+    /*@ normal_behavior
+         requires true;
+         ensures \result == \dl_sElementOf(v, this.absVal);
+         accessible \dl_createdRepfp(this);
+         assignable \dl_createdRepfp(this);
+        */
+    @RepOnly
+    public abstract boolean contains(int v);
 }

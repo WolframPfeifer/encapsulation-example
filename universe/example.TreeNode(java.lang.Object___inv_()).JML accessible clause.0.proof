@@ -82,8 +82,8 @@
 // Proof-Obligation settings
 { 
     "class" : "de.uka.ilkd.key.proof.init.DependencyContractPO",
-    "contract" : "TreeNode[java.lang.Object::<inv>()].JML accessible clause.0",
-    "name" : "TreeNode[java.lang.Object::<inv>()].JML accessible clause.0"
+    "contract" : "example.TreeNode[java.lang.Object::<inv>()].JML accessible clause.0",
+    "name" : "example.TreeNode[java.lang.Object::<inv>()].JML accessible clause.0"
  }
 
 \proof {
@@ -101,7 +101,7 @@
 (rule "andLeft" (formula "1"))
 (rule "notLeft" (formula "3"))
  (builtin "One Step Simplification" (formula "8") (ifInst ""  (formula "6")) (userinteraction))
-(rule "Class_invariant_axiom_for_TreeNode" (formula "8") (inst "v=v") (inst "v_0=v_0") (ifseqformula "7") (userinteraction))
+(rule "Class_invariant_axiom_for_example_TreeNode" (formula "8") (inst "v=v") (inst "v_0=v_0") (ifseqformula "7") (userinteraction))
  (builtin "One Step Simplification" (formula "8"))
 (rule "castDel" (formula "8") (term "1,1,1,0,0,0,0,0,0,0,0"))
 (rule "castDel" (formula "8") (term "1,0,1,1,0,0,0,0,0,0,0,0"))
@@ -622,7 +622,7 @@
                            (rule "castDel" (formula "1") (term "0,0,1"))
                            (rule "ownsField" (formula "1") (term "0,0,1"))
                            (rule "castDel" (formula "1") (term "0,0,1"))
-                           (rule "Class_invariant_axiom_for_TreeNode" (formula "8") (inst "v=v") (inst "v_0=v_0") (ifseqformula "9"))
+                           (rule "Class_invariant_axiom_for_example_TreeNode" (formula "8") (inst "v=v") (inst "v_0=v_0") (ifseqformula "9"))
                             (builtin "One Step Simplification" (formula "8"))
                            (rule "castDel" (formula "8") (term "1,0,1,1,0,0,0,0,0,0,0,0"))
                            (rule "castDel" (formula "8") (term "1,1,1,0,0,0,0,0,0,0,0"))
@@ -1385,7 +1385,7 @@
                            (rule "limit_java_lang_Object__inv_" (formula "8"))
                            (rule "replace_known_left" (formula "8") (term "1") (ifseqformula "9"))
                             (builtin "One Step Simplification" (formula "8"))
-                           (rule "Class_invariant_axiom_for_TreeNode" (formula "9") (inst "v=v") (inst "v_0=v_0") (ifseqformula "10"))
+                           (rule "Class_invariant_axiom_for_example_TreeNode" (formula "9") (inst "v=v") (inst "v_0=v_0") (ifseqformula "10"))
                             (builtin "One Step Simplification" (formula "9"))
                            (rule "castDel" (formula "9") (term "1,0,1,1,0,0,0,0,0,0,0,0"))
                            (rule "castDel" (formula "9") (term "1,1,1,0,0,0,0,0,0,0,0"))
@@ -2048,7 +2048,7 @@
                      (branch "Case 2"
                         (rule "impRight" (formula "8") (userinteraction))
                         (rule "notLeft" (formula "1") (userinteraction))
-                        (rule "Class_invariant_axiom_for_TreeNode" (formula "6") (inst "v=v") (inst "v_0=v_0") (ifseqformula "8") (userinteraction))
+                        (rule "Class_invariant_axiom_for_example_TreeNode" (formula "6") (inst "v=v") (inst "v_0=v_0") (ifseqformula "8") (userinteraction))
                         (rule "andLeft" (formula "6"))
                         (rule "andLeft" (formula "6"))
                         (rule "andLeft" (formula "6"))
@@ -2059,9 +2059,9 @@
                         (rule "andLeft" (formula "6"))
                         (rule "andLeft" (formula "6"))
                         (rule "observerDependencyFormula" (formula "18") (inst "termWithSmallHeap=java.lang.Object::<inv>$lmtd(heap,
-                             TreeNode::select(heap,
+                             example.TreeNode::select(heap,
                                               self,
-                                              TreeNode::$left))") (userinteraction))
+                                              example.TreeNode::$left))") (userinteraction))
                         (branch "Case 1"
                             (builtin "One Step Simplification" (formula "13"))
                             (builtin "One Step Simplification" (formula "10") (ifInst ""  (formula "16")))
@@ -2803,7 +2803,7 @@
                      (rule "limit_java_lang_Object__inv_" (formula "9"))
                      (rule "replace_known_left" (formula "9") (term "1") (ifseqformula "10"))
                       (builtin "One Step Simplification" (formula "9"))
-                     (rule "Class_invariant_axiom_for_TreeNode" (formula "10") (inst "v=v") (inst "v_0=v_0") (ifseqformula "13"))
+                     (rule "Class_invariant_axiom_for_example_TreeNode" (formula "10") (inst "v=v") (inst "v_0=v_0") (ifseqformula "13"))
                       (builtin "One Step Simplification" (formula "10") (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "3")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")))
                      (rule "closeFalse" (formula "10"))
                   )
@@ -2900,7 +2900,7 @@
                   (rule "limit_java_lang_Object__inv_" (formula "10"))
                   (rule "replace_known_left" (formula "10") (term "1") (ifseqformula "11"))
                    (builtin "One Step Simplification" (formula "10"))
-                  (rule "Class_invariant_axiom_for_TreeNode" (formula "11") (inst "v=v") (inst "v_0=v_0") (ifseqformula "14"))
+                  (rule "Class_invariant_axiom_for_example_TreeNode" (formula "11") (inst "v=v") (inst "v_0=v_0") (ifseqformula "14"))
                    (builtin "One Step Simplification" (formula "11") (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")))
                   (rule "castDel" (formula "11") (term "1,0,1,1,0,0,0,0,0,0,0,0"))
                   (rule "castDel" (formula "11") (term "1,1,1,0,0,0,0,0,0,0,0"))
@@ -3217,7 +3217,7 @@
                )
             )
             (branch "Case 2"
-               (rule "Class_invariant_axiom_for_TreeNode" (formula "6") (inst "v=v") (inst "v_0=v_0") (ifseqformula "7") (userinteraction))
+               (rule "Class_invariant_axiom_for_example_TreeNode" (formula "6") (inst "v=v") (inst "v_0=v_0") (ifseqformula "7") (userinteraction))
                (rule "impRight" (formula "8"))
                (rule "andLeft" (formula "7"))
                (rule "notLeft" (formula "1"))
@@ -3254,9 +3254,9 @@
                (rule "unlimit_java_lang_Object__inv_" (formula "11") (userinteraction))
                (rule "unlimit_java_lang_Object__inv_" (formula "18") (userinteraction))
                (rule "observerDependencyFormula" (formula "18") (inst "termWithSmallHeap=java.lang.Object::<inv>(heap,
-                        TreeNode::select(heap,
+                        example.TreeNode::select(heap,
                                          self,
-                                         TreeNode::$right))") (userinteraction))
+                                         example.TreeNode::$right))") (userinteraction))
                (branch "Case 1"
                   (rule "close" (formula "18") (ifseqformula "11"))
                )
@@ -3637,7 +3637,7 @@
             (rule "limit_java_lang_Object__inv_" (formula "9"))
             (rule "replace_known_left" (formula "9") (term "1") (ifseqformula "10"))
              (builtin "One Step Simplification" (formula "9"))
-            (rule "Class_invariant_axiom_for_TreeNode" (formula "10") (inst "v=v") (inst "v_0=v_0") (ifseqformula "13"))
+            (rule "Class_invariant_axiom_for_example_TreeNode" (formula "10") (inst "v=v") (inst "v_0=v_0") (ifseqformula "13"))
              (builtin "One Step Simplification" (formula "10") (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "3")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")))
             (rule "closeFalse" (formula "10"))
          )
@@ -3734,7 +3734,7 @@
          (rule "limit_java_lang_Object__inv_" (formula "10"))
          (rule "replace_known_left" (formula "10") (term "1") (ifseqformula "11"))
           (builtin "One Step Simplification" (formula "10"))
-         (rule "Class_invariant_axiom_for_TreeNode" (formula "11") (inst "v=v") (inst "v_0=v_0") (ifseqformula "14"))
+         (rule "Class_invariant_axiom_for_example_TreeNode" (formula "11") (inst "v=v") (inst "v_0=v_0") (ifseqformula "14"))
           (builtin "One Step Simplification" (formula "11") (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")))
          (rule "castDel" (formula "11") (term "1,1,1,0,0,0,0,0,0,0,0"))
          (rule "castDel" (formula "11") (term "1,0,1,1,0,0,0,0,0,0,0,0"))
@@ -4126,7 +4126,7 @@
       (rule "limit_java_lang_Object__inv_" (formula "9"))
       (rule "replace_known_left" (formula "9") (term "1") (ifseqformula "10"))
        (builtin "One Step Simplification" (formula "9"))
-      (rule "Class_invariant_axiom_for_TreeNode" (formula "10") (inst "v=v") (inst "v_0=v_0") (ifseqformula "13"))
+      (rule "Class_invariant_axiom_for_example_TreeNode" (formula "10") (inst "v=v") (inst "v_0=v_0") (ifseqformula "13"))
        (builtin "One Step Simplification" (formula "10") (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "12")) (ifInst ""  (formula "3")) (ifInst ""  (formula "12")))
       (rule "castDel" (formula "10") (term "1,1,1,0,0,0,0,0,0,0,0"))
       (rule "castDel" (formula "10") (term "1,0,1,1,0,0,0,0,0,0,0,0"))
@@ -4369,7 +4369,7 @@
    (rule "limit_java_lang_Object__inv_" (formula "10"))
    (rule "replace_known_left" (formula "10") (term "1") (ifseqformula "11"))
     (builtin "One Step Simplification" (formula "10"))
-   (rule "Class_invariant_axiom_for_TreeNode" (formula "11") (inst "v=v") (inst "v_0=v_0") (ifseqformula "15"))
+   (rule "Class_invariant_axiom_for_example_TreeNode" (formula "11") (inst "v=v") (inst "v_0=v_0") (ifseqformula "15"))
     (builtin "One Step Simplification" (formula "11") (ifInst ""  (formula "14")) (ifInst ""  (formula "13")) (ifInst ""  (formula "14")) (ifInst ""  (formula "13")) (ifInst ""  (formula "14")) (ifInst ""  (formula "14")) (ifInst ""  (formula "14")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "13")) (ifInst ""  (formula "14")) (ifInst ""  (formula "13")) (ifInst ""  (formula "14")) (ifInst ""  (formula "13")) (ifInst ""  (formula "16")))
    (rule "closeFalse" (formula "11"))
 )

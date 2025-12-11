@@ -1,3 +1,5 @@
+package example;
+
 import universe.qual.*;
 
 public final class TreeNode {
@@ -23,10 +25,6 @@ public final class TreeNode {
 
     //@ accessible \inv: \dl_createdRepfp(this);
 
-    // @ public ghost int depth;
-    // @ private invariant depth == (left == null ? 0 : left.depth) + 1 + (right == null ? 0 : right.depth);
-    // @ private invariant depth >= 0;
-
     // leaf
     /*@ normal_behavior
       @  ensures absVal == \dl_sSingleton(v);
@@ -37,7 +35,6 @@ public final class TreeNode {
     public TreeNode(int v) {
         value = v;
         //@ set absVal = \dl_sSingleton(v);
-        // @ set depth = 1;
     }
 
     /*@ normal_behavior
@@ -47,7 +44,6 @@ public final class TreeNode {
       @*/
     @RepOnly
     public void add(int v) {
-        // TODO: in original CellTreeNode: method call (hashcode) on @Payload!!! "looks into" payload and thus breaks encapsulation, but: set abstraction does not depend on it, so maybe it is allowed?!
         if (v == value)
             return;
         else if (v < value) {
@@ -66,7 +62,6 @@ public final class TreeNode {
             }
         }
         //@ set absVal = \dl_sUnion(absVal, \dl_sSingleton(v));
-        // @ set depth = (left == null ? 0 : left.depth) + 1 + (right == null ? 0 : right.depth);
     }
 
     /*@ normal_behavior

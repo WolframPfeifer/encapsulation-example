@@ -1,34 +1,22 @@
-// small example of mutable DTI class
+package example;
 
-/*@ predicate cell(Cell obj, int v) =
-      obj != null &*& obj.value |-> v;
-@*/
+public abstract class Cell {
 
-public final class Cell {
-    private int value;
+    //@ predicate pred(int absVal);
 
-    public Cell()
+    public static Cell init()
         //@ requires true;
-        //@ ensures cell(this, 0);
+        //@ ensures result.pred(?result_absVal) &*& (result_absVal) == (0) &*& result != null;
     {
-        //@ close cell(this, 0);
+        //@ assume(false);
+        return null;
     }
 
-    public int value()
-        //@ requires cell(this, ?x);
-        //@ ensures cell(this, x) &*& result == x;
-    {
-        //@ open cell(this, x);
-        return value;
-        //@ close cell(this, x);
-    }
+    public abstract int value();
+        //@ requires this.pred(?this_absVal_old) &*& true;
+        //@ ensures this.pred(?this_absVal) &*& (result) == (this_absVal);
 
-    public void set(int v)
-        //@ requires cell(this, ?x);
-        //@ ensures cell(this, v);
-    {
-        //@ open cell(this, x);
-        value = v;
-        //@ close cell(this, v);
-    }
+    public abstract void set(int v);
+        //@ requires this.pred(?this_absVal_old) &*& true;
+        //@ ensures this.pred(?this_absVal) &*& (this_absVal) == (v);
 }

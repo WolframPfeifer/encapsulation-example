@@ -6,7 +6,6 @@ package example;
      &*& (h == null ? ll == nil : nellist(h, ll)); @*/
 
 public final class LinkedCellListImpl extends LinkedCellList {
-
     private NonEmptyLinkedCellList head;
 
     public LinkedCellListImpl()

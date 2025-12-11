@@ -21,8 +21,6 @@ package example;
 //@ predicate_family llist(Class c)(LinkedCellList l, list<Cell> xs);
 
 public abstract class LinkedCellList {
-    // @ predicate llist(list<Cell> ll);
-
     public static LinkedCellList init()
         //@ requires true;
         //@ ensures llist(result.getClass())(result, ?result_absVal) &*& result_absVal == nil &*& result != null;

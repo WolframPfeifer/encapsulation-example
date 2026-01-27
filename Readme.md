@@ -32,9 +32,10 @@ Files in the repo:
     * TreeNode.java             (used internally by IntTreeSetImpl as part of the set implementation)
     * *.proof                   (KeY proofs that CellImpl adheres to specs in Cell)
 * verifast
-    * Cell.java                 (verification interface for class Cell)
     * LinkedCellList.java       (verification template for LinkedCellList, contains specs)
     * LinkedCellListImpl.java   (verification stub, filled in by the user with implementation and additional specification)
+    * Cell.javaspec             (verification interface for class Cell)
+    * cell.jarspec              ("bundle" for the specification of Cell, needed by VeriFast when referring to javaspec files)
     * sources.jarsrc            (entry file for verification with VeriFast)
 * tools
     * rt                        (runtime files for verifast)
@@ -71,7 +72,7 @@ The following workflow can be used:
 
 Make sure that the VeriFast executable is in the PATH, and run it on the provided file to check all assertions/contracts to (re-)verify the class `IntTreeSet` (and its nested data structure class `TreeNode`).
 ```bash
-./tools/verifast -c -allow_assume -allow_dead_code -shared verifast/sources.jarsrc
+./tools/verifast -c -allow_dead_code -shared verifast/sources.jarsrc
 ```
 
 ## Verification of the Client with KeY (Dynamic Frames)

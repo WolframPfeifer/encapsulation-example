@@ -25,6 +25,7 @@ public abstract class LinkedCellList {
         //@ requires true;
         //@ ensures llist(result.getClass())(result, ?result_absVal) &*& result_absVal == nil &*& result != null;
     {
+        Cell c = Cell.init();
         return new LinkedCellListImpl();
     }
 

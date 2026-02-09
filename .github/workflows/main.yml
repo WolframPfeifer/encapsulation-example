@@ -58,21 +58,22 @@ jobs:
         with:
           platforms: ${{ matrix.platform }}
           context: "{{defaultContext}}:contents/"
+          file: "DockerFile"
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
           cache-from: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache-${{ matrix.cachetag }}
           cache-to: type=registry,ref=${{ env.REGISTRY_IMAGE }}:buildcache-${{ matrix.cachetag }},mode=max
-      
-#      - name: Export digest
-#        run: |
-#          mkdir -p /tmp/digests
-#          digest="${{ steps.build.outputs.digest }}"
-#          touch "/tmp/digests/${digest#sha256:}"
-      
-#      - name: Upload digest
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: digests-${{ env.PLATFORM_PAIR }}
-#          path: /tmp/digests/*
-#          if-no-files-found: error
-#          retention-days: 1
+
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1

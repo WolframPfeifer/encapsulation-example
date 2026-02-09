@@ -2,7 +2,7 @@ name: container build
 
 on:
   push:
-    branches: [main]
+    branches: [main,docker]
 
 env:
   REGISTRY_IMAGE: wolframpfeifer/encapsulation

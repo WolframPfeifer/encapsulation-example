@@ -21,7 +21,8 @@ public abstract class Cell {
         ensures \invariant_for(\result);
         */
     public static Cell init() {
-        //NOTE: This should be never called, as it is only the interface!
+        //NOTE: This is never called, it is only the interface for verification! The actual implementation is in ../key/Cell.java and proven with KeY. Therefore, assume false is ok here.
+        //@ assume false;
         return null;
     }
 
@@ -36,7 +37,6 @@ public abstract class Cell {
     /*@  normal_behavior
         requires (false | true);
         ensures (true & (true ==> this.absVal == v));
-        accessible this.footprint;
         assignable this.footprint;
         */
     public abstract void set(int v);

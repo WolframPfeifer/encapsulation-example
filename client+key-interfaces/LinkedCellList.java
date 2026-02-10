@@ -24,14 +24,14 @@ public abstract class LinkedCellList {
         ensures \invariant_for(\result);
         */
     public static LinkedCellList init() {
-        //NOTE: This should be never called, as it is only the interface!
+        //NOTE: This is never called, it is only the interface for verification! The actual implementation is in ../verifast/LinkedCellList.java and proven with VeriFast. Therefore, assume false is ok here.
+        //@ assume false;
         return null;
     }
 
     /*@  normal_behavior
         requires (false | true);
         ensures (true & (true ==> this.absVal == \seq_concat(\old(this.absVal), \seq_singleton(v))));
-        accessible this.footprint;
         assignable this.footprint;
         */
     public abstract void add(Cell v);

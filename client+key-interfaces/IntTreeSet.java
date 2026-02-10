@@ -21,14 +21,14 @@ public abstract class IntTreeSet {
         ensures \invariant_for(\result);
         */
     public static IntTreeSet init() {
-        //NOTE: This should be never called, as it is only the interface!
+        //NOTE: This is never called, it is only the interface for verification! The actual implementation is in ../universe/IntTreeSet.java and proven with Universe Types + KeY. Therefore, assume false is ok here.
+        //@ assume false;
         return null;
     }
 
     /*@  normal_behavior
         requires (false | true);
         ensures (true & (true ==> (\forall int x;\dl_sElementOf(x, \old(this.absVal)) || x == v) && \dl_sElementOf(v, this.absVal)));
-        accessible this.footprint;
         assignable this.footprint;
         */
     public abstract void add(int v);

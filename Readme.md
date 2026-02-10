@@ -1,4 +1,34 @@
-In this repo, the example for the FM submission "A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures" can be found.
+# Abstract
+This is the artifact for the FM 2026 paper "A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures" by Wolfram Pfeifer, Werner Dietl, and Mattias Ulbrich. It contains the example project described in the paper, which consists of a Java client using three libraries (Cell, LinkedCellList, and IntTreeSet), verified cooperatively with the tools KeY (standard variant using Dynamic Frames), VeriFast, and a Universe Type Checker plus KeY (special variant using Universe Types). The artifact provides the source code of the example, specifications in the different involved languages, as well as proofs which can be reloaded (if the specific verification tool supports that).
+For each tool, scripts are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the involved verification tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1GB of RAM (tested with "docker run -m 1g --memory-swap 1g --cpus=1"), and should need about 4 min for checking all the proofs.
+We apply for the following badges: Artifacts Evaluated Level 1 (Functional), Artifacts Available
+
+# Installation and Smoke Tests
+Java 21 or newer is needed by the involved verification tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution.
+We recommend using the docker image in the artifact to run the tools.
+
+## Via Docker
+Make sure that Docker is installed:
+* [Linux](https://docs.docker.com/desktop/install/linux-install/)
+* [Apple](https://docs.docker.com/desktop/install/mac-install/)
+* [Windows](https://docs.docker.com/desktop/install/windows-install/)
+
+Make sure that you are in the directory of the artifact (where this Readme is located) and run the following command:
+```bash
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTests.sh
+```
+This checks that the tools VeriFast, KeY, and the KeY variant for Universe Types can be run.
+The output should print the usage messages of the corresponding tools.
+
+Note that the current directory is mounted into the docker container via `-v .:/mnt/encapsulation`.
+
+## Without Docker
+Make sure that you have at least Java 21 installed. Also, depending on your system configuration, you might need to install GOMP (package libgomp1 for Ubuntu 24.04).
+
+```bash
+./smokeTests.sh
+```
+As in the case with Docker, it checks that the tools can be run correctly by printing their help messages.
 
 # Structure of the Example
 The example consists of a client class which uses multiple data structures: A cell class (small mutable container; containing an int in this case), a linked list of cells, and a set of ints, implemented as a binary tree.
@@ -51,6 +81,7 @@ Files in the repo:
 The tools can be found as binaries in the `tools` folder.
 * KeY (default Dynamic Frames version)
 * KeY (UET version)
+* citool (provides a commandline interface for the GUI tool KeY)
 * VeriFast
 * Checker for Universe Encapsulation Types (UET; implemented in the Checker-Framework)
 * (not included, can be found here: https://github.com/Contract-LIB/contract-chameleon) Contract-Chameleon (for generating interfaces and stubs from the Contract-LIB specification)
@@ -68,20 +99,40 @@ The following workflow can be used:
 * The filled in stubs are then verified w.r.t. the verification templates (1), each with the concrete verification technique/tool chosen for it.
 * The client is verified in the technique of choice, using the verification interfaces (3).
 
-## Verification with VeriFast (Separation Logic)
+# Replaying/Checking the Proofs
 
-Make sure that the VeriFast executable is in the PATH, and run it on the provided file to check all assertions/contracts to (re-)verify the class `IntTreeSet` (and its nested data structure class `TreeNode`).
+We provide a script as the main task for running the tools and replaying/checking the proofs.
+Make sure that the current location is the main directory of the artifact and run the script in `check.sh`.
+
+Via Docker:
+```bash
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./check.sh
+```
+
+Without Docker:
+```bash
+./check.sh
+```
+
+## Manually Running the Checks (Optional)
+For experimenting and understanding, this section explains how each individual tool is called.
+
+TODO: section has to be updated and is unfinished
+
+### Verification with VeriFast (Separation Logic)
+
+Run VeriFast on the provided file to check all assertions/contracts to (re-)verify the class `IntTreeSet` (and its nested data structure class `TreeNode`).
 ```bash
 ./tools/verifast -c -allow_dead_code -shared verifast/sources.jarsrc
 ```
 
-## Verification of the Client with KeY (Dynamic Frames)
+### Verification of the Client with KeY (Dynamic Frames)
 Run the following command to check that all the provided proofs are loadable.
 ```bash
 java -jar tools/key-2.12.4-dev-exe.jar "--auto" "client+key-interfaces/example.Client(example.Client__m()).JML normal_behavior operation contract.0.proof"
 ```
 
-## Verification of the Cell with KeY (Dynamic Frames)
+### Verification of the Cell with KeY (Dynamic Frames)
 Run the following command to check that all the provided proofs are loadable.
 ```bash
 java -jar tools/key-2.12.4-dev-exe.jar "--auto" "key/example.Cell(example.Cell__init()).JML normal_behavior operation contract.0.proof"
@@ -91,7 +142,7 @@ java -jar tools/key-2.12.4-dev-exe.jar "--auto" "key/example.CellImpl(example.Ce
 java -jar tools/key-2.12.4-dev-exe.jar "--auto" "key/example.CellImpl(java.lang.Object___inv_()).JML accessible clause.0.proof"
 ```
 
-## Verification with Universe Encapsulation Types + KeY
+### Verification with Universe Encapsulation Types + KeY
 First, it should be checked that the type checker runs without any errors on the provided program:
 ```bash
 ./checkEnc.sh universe/*.java
@@ -146,4 +197,8 @@ gradle run --args="vf-provider contractlib/LinkedCellList.clib verifast"
 gradle run --args="vf-provider contractlib/LinkedCellList.clib verifast"
 ```
 
-Note: Support for the UET variant of KeY is currently not implemented, but planned for the future.
+Note: Support for the UET variant of KeY is currently not yet implemented, but planned for the future.
+
+# Support
+
+If you struggle with any installation or verification step, please reach out to [Wolfram Pfeifer](https://formal.kastel.kit.edu/~pfeifer/).

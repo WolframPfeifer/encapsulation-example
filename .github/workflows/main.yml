@@ -2,9 +2,8 @@ name: container build
 
 on:
   push:
-    branches: [main,docker]
-
-on: workflow_dispatch
+    branches: [main, docker]
+  workflow_dispatch:
 
 env:
   REGISTRY_IMAGE: wolframpfeifer/encapsulation
@@ -21,9 +20,9 @@ jobs:
           - platform: linux/amd64
             cachetag: linux-amd64
             os: ubuntu-latest
-          - platform: linux/arm64
-            cachetag: linux-arm64
-            os: ubuntu-24.04-arm
+#          - platform: linux/arm64
+#            cachetag: linux-arm64
+#            os: ubuntu-24.04-arm
     steps:
       - name: Prepare
         run: |

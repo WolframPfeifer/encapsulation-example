@@ -13,5 +13,4 @@
 #java -jar tools/key-2.12.4-UT-dev-exe.jar "--auto" "universe/example.TreeNode(example.TreeNode__TreeNode(int)).JML normal_behavior operation contract.0.proof"
 #java -jar tools/key-2.12.4-UT-dev-exe.jar "--auto" "universe/example.TreeNode(java.lang.Object___inv_()).JML accessible clause.0.proof"
 
-# Does not work yet (API of KeY changed, needs different citool version or merge of changes to KeY)
 java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-UT-dev-exe.jar:tools/key-citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path universe universe

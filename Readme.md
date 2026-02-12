@@ -1,27 +1,25 @@
 # A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures (Artifact)
 
-## Abstract
-
 This is the artifact for the FM 2026 paper "A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures" by Wolfram Pfeifer, Werner Dietl, and Mattias Ulbrich. It contains the example project described in the paper, which consists of a Java client using three libraries (Cell, LinkedCellList, and IntTreeSet), verified cooperatively with the tools KeY (standard variant using Dynamic Frames), VeriFast, and a Universe Type Checker plus KeY (special variant using Universe Types). The artifact provides the source code of the example, specifications in the different involved languages, as well as proofs which can be reloaded (if the specific verification tool supports that).
-
-For each tool, scripts/commands are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the involved verification tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a Docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1GB of RAM (tested with `docker run -m 1g --memory-swap 1g --cpus=1`), and should need about 4 min for checking all the proofs.
-
-The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed to build Linux ARM binaries). However, everything except for VeriFast can be run also through our docker container for ARM, and ARM binaries for MacOS exist for VeriFast and might be used (without Docker).
 
 ## Requirements
 
-TODO: there is quite a bit of redundancy between the Abstract above and these sections here.
-Is that intentional? Or could they be combined? Maybe put the abstract for the artifact in a separate file and make this readme redundancy-free?
+The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed to build Linux ARM binaries). However, everything except for VeriFast can be run also through our Docker container for ARM, and MacOS ARM binaries for VeriFast are included in the artifact and might be used (without Docker). Other operating systems on ARM are not supported.
 
-For the full proof replay, a machine with an amd64 architecture is needed.
-The reason is that binaries for VeriFast are not available for Linux ARM (we invested some effort to try to build it our own, but did not succeed).
-If you have a MacOS on ARM, it should still be possible to run the corresponding binaries (included in the artifact) directly without the docker container.
-Other operating systems on ARM are not supported.
+For each involved verification tool, scripts/commands are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a Docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1GB of RAM (tested with `docker run -m 1g --memory-swap 1g --cpus=1`), and should need about 4 min for checking all the proofs.
+
+### Involved Tools
+
+The tools can be found as binaries/JARs in the `tools` folder.
+
+* KeY (default Dynamic Frames version; https://github.com/KeYProject/key)
+* KeY (special variant using Universe Encapsulation Types; https://github.com/KeYProject/key/tree/pfeifer/universeEncapsulation)
+* citool (provides a commandline interface for the GUI tool KeY; https://github.com/wadoon/key-citool)
+* VeriFast (https://github.com/verifast/verifast)
+* Checker for Universe Encapsulation Types (implemented in the EISOP Checker Framework; https://github.com/WolframPfeifer/universe/tree/pfeifer/encapsulation)
+* Contract-Chameleon (for generating interfaces and stubs from the Contract-LIB specification; https://github.com/Contract-LIB/contract-chameleon)
 
 ## Installation and Smoke Tests
-
-Java 21 or newer is needed by the involved verification tools (both KeY variants, Universe Type Checker, and [citool](https://github.com/wadoon/key-citool)), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution.
-We provide a docker image with these dependencies preinstalled in the artifact to run the tools.
 
 Make sure that Docker is installed:
 * [Linux](https://docs.docker.com/desktop/install/linux-install/)
@@ -30,13 +28,12 @@ Make sure that Docker is installed:
 
 Make sure that you are in the directory of the artifact (where this Readme is located).
 
-The docker image required to run the tools in this artifact can be downloaded from DockerHub, which should happen automatically with `docker run` if you have internet connection.
+The Docker image required to run the tools in this artifact can be downloaded from DockerHub, which should happen automatically with `docker run` if you have internet connection.
 Alternatively, it can also be loaded from the image file contained in the artifact.
 To load it from the file, use the following command:
 ```bash
 docker load -i docker/wolframpfeifer_encapsulation.tar.gz
 ```
-TODO: is there a step missing to first create the .tar.gz file?
 Afterwards the image `wolframpfeifer/encapsulation` will be available locally for running containers from it.
 
 The smoke tests can be run using the following command:
@@ -54,7 +51,7 @@ tools/vf/verifast-26.01-macos-aarch/bin/verifast --help
 ```
 This should print the usage messages of the corresponding tools (VeriFast, KeY, the Universe Encapsulation Types (UET) type checker, and the KeY variant for Universe Types) and thus show that they can be executed correctly.
 
-Note that the current directory is mounted into the docker container via `-v .:/mnt/enc`, so changes outside of the container are directly in effect inside and vice versa.
+Note that the current directory is mounted into the Docker container via `-v .:/mnt/enc`, so changes outside of the container are directly in effect inside and vice versa.
 
 ## Workflow of the Cooperative Verification Technique
 
@@ -70,7 +67,7 @@ The following workflow can be used:
 * The filled-in stubs are then verified w.r.t. the verification templates (1), each with the concrete verification technique/tool chosen for it.
 * The client is verified in the technique of choice, using the verification interfaces (3).
 
-Note that at the moment, Contract-Chameleon is still a prototype and only supports export for some of the tools. Therefore, after generation of the language/tool-specific interfaces and stubs (step 3), manual changes had to be made. In the case of ... TODO
+Note that at the moment, Contract-Chameleon is still a prototype and only supports export for some of the verification tools. Therefore, after generation of the language/tool-specific interfaces and stubs (step 3), manual changes had to be made.
 
 ## Structure of this Example
 
@@ -91,7 +88,7 @@ Files in the artifact:
     * LinkedCellList.clib               (abstract specification of Cell and LinkedCellList)
     * IntTreeSet.clib                   (abstract specification of IntTreeSet)
 * docker
-    * Dockerfile                        (file for building docker container that can be used to run the tools for proof checking)
+    * Dockerfile                        (file for building Docker container that can be used to run the tools for proof checking)
 * key
     * Cell.java                         (verification template for Cell, contains specs)
     * CellImpl.java                     (verification stub, filled in by the user with implementation and additional specification)
@@ -127,19 +124,6 @@ Files in the artifact:
 * check*.sh                             (individual sub-scripts for the techniques used)
 * Readme.md                             (this file)
 ```
-
-### Involved Tools
-
-The tools can be found as binaries/JARs in the `tools` folder.
-
-* KeY (default Dynamic Frames version)
-* KeY (UET version)
-* citool (provides a commandline interface for the GUI tool KeY)
-* VeriFast
-* Checker for Universe Encapsulation Types (UET; implemented in the Checker Framework)
-* Contract-Chameleon (for generating interfaces and stubs from the Contract-LIB specification; not included, can be found here: https://github.com/Contract-LIB/contract-chameleon)
-
-TODO: In the above list or elsewhere, add links to the tools?
 
 ## Replaying/Checking the Proofs
 
@@ -186,7 +170,7 @@ docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -Dslf4j.internal.ver
 ```
 The output should show 16 successfully closed proofs.
 
-Note: We are using citool (https://github.com/wadoon/key-citool) as a clean CLI for KeY, which is primarily a GUI tool.
+Note: We are using citool as a clean CLI for KeY, which is primarily a GUI tool.
 It is also possible to use the GUI to load and inspect the proofs, which can be done by running the GUI of KeY without Docker (`java -jar tools/key-2.12.4-dev-exe.jar`) and manually selecting the proof to load via the menu.
 
 #### Verification of the Cell with KeY (Dynamic Frames)

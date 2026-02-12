@@ -1,1 +1,0 @@
-vfide -codeFont "Consolas 20" -traceFont "Sans 15" %*

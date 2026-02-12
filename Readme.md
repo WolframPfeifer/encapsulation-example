@@ -23,7 +23,16 @@ Make sure that Docker is installed:
 * [Windows](https://docs.docker.com/desktop/install/windows-install/)
 
 Make sure that you are in the directory of the artifact (where this Readme is located).
-Run the following command:
+
+The docker image required to run the tools in this artifact can be downloaded from DockerHub, which should happen automatically with `docker run` if you have internet connection.
+Alternatively, they can also be loaded from the image file contained in the artifact.
+To load it from the file, use the following command:
+```bash
+docker load -i docker/wolframpfeifer_encapsulation.tar.gz
+```
+Afterwards the image `wolframpfeifer/encapsulation` will be available locally for running containers from it.
+
+The smoke tests can be run the following command:
 ```bash
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./smokeTest.sh
 ```

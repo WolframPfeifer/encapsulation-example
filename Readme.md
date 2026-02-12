@@ -5,7 +5,6 @@ This is the artifact for the FM 2026 paper "A Framework for the Interoperable Sp
 For each tool, scripts/commands are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the involved verification tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a Docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1GB of RAM (tested with `docker run -m 1g --memory-swap 1g --cpus=1`), and should need about 4 min for checking all the proofs.
 
 The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed to build Linux ARM binaries). However, everything except for VeriFast can be run also through our docker container for ARM, and ARM binaries for MacOS exist for VeriFast and might be used (without Docker).
-We apply for the following badges: Artifacts Evaluated Level 2 (Functional and Reusable), Artifacts Available
 
 ## Requirements
 For the full proof replay, a machine with an amd64 architecture is needed.

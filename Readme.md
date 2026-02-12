@@ -31,7 +31,7 @@ docker load -i docker/wolframpfeifer_encapsulation.tar.gz
 ```
 Afterwards the image `wolframpfeifer/encapsulation` will be available locally for running containers from it.
 
-The smoke tests can be run the following command:
+The smoke tests can be run using the following command:
 ```bash
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./smokeTest.sh
 ```
@@ -44,7 +44,7 @@ Then call VeriFast directly:
 ```bash
 tools/vf/verifast-26.01-macos-aarch/bin/verifast --help
 ```
-This should print the usage messages of the corresponding tools (VeriFast, KeY, the UET type checker, and the KeY variant for Universe Types) and thus show that they can be executed correctly.
+This should print the usage messages of the corresponding tools (VeriFast, KeY, the Universe Encapsulation Types (UET) type checker, and the KeY variant for Universe Types) and thus show that they can be executed correctly.
 
 Note that the current directory is mounted into the docker container via `-v .:/mnt/enc`, so changes outside of the container are directly in effect inside and vice versa.
 
@@ -61,7 +61,7 @@ The following workflow can be used:
 * The filled in stubs are then verified w.r.t. the verification templates (1), each with the concrete verification technique/tool chosen for it.
 * The client is verified in the technique of choice, using the verification interfaces (3).
 
-Note that at the moment, Contract-Chameleon is still a prototype and only supports export for some of the tools. Therefore, after generation of the language/tool-specific interfaces and stubs (step 3), manual changes had to be made. In the case of ...
+Note that at the moment, Contract-Chameleon is still a prototype and only supports export for some of the tools. Therefore, after generation of the language/tool-specific interfaces and stubs (step 3), manual changes had to be made. In the case of ... TODO
 
 ## Structure of this Example
 The example consists of a client class which uses multiple data structures: A cell class (small mutable container; containing an int in this case), a linked list of cells, and a set of ints, implemented as a binary tree.
@@ -136,7 +136,7 @@ Make sure that the current location is the main directory of the artifact and ru
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./check.sh
 ```
 
-On MacOS ARM (run everything except for VeriFast through Docker:
+On MacOS ARM run everything except for VeriFast through Docker:
 ```bash
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./checkNoVeriFast.sh
 tools/vf/verifast-26.01-macos-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc

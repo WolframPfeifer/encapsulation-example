@@ -1,6 +1,5 @@
 FROM eclipse-temurin:21
-WORKDIR /mnt/encapsulation
-#COPY contents/ .
+WORKDIR /mnt/enc
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
     libgomp1 && \

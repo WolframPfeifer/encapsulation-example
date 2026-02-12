@@ -25,12 +25,12 @@ Make sure that Docker is installed:
 Make sure that you are in the directory of the artifact (where this Readme is located).
 Run the following command:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTest.sh
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./smokeTest.sh
 ```
 
 If you have a MacOS on ARM, run:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTestNoVeriFast.sh
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./smokeTestNoVeriFast.sh
 ```
 Then call VeriFast directly:
 ```bash
@@ -38,7 +38,7 @@ tools/vf/verifast-26.01-macos-aarch/bin/verifast --help
 ```
 This should print the usage messages of the corresponding tools (VeriFast, KeY, the UET type checker, and the KeY variant for Universe Types) and thus show that they can be executed correctly.
 
-Note that the current directory is mounted into the docker container via `-v .:/mnt/encapsulation`, so changes outside of the container are directly in effect inside and vice versa.
+Note that the current directory is mounted into the docker container via `-v .:/mnt/enc`, so changes outside of the container are directly in effect inside and vice versa.
 
 ## Workflow of the Cooperative Verification Technique
 Our technique is applicable to verify programs where a client uses multiple data structures which are encapsulated (a precise formal definition of this notion is given in the paper).
@@ -125,12 +125,12 @@ The tools can be found as binaries/JARs in the `tools` folder.
 We provide a script as the main task for running the tools and replaying/checking the proofs.
 Make sure that the current location is the main directory of the artifact and run the script in `check.sh` via the provided Docker container:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./check.sh
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./check.sh
 ```
 
 On MacOS ARM (run everything except for VeriFast through Docker:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./checkNoVeriFast.sh
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./checkNoVeriFast.sh
 tools/vf/verifast-26.01-macos-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc
 ```
 
@@ -142,7 +142,7 @@ For experimenting and understanding, this section explains how each individual t
 Run VeriFast on the provided file to check all assertions/contracts to (re-)verify the class `IntTreeSet` (and its nested data structure class `TreeNode`).
 With amd64 architecture:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'tools/vf/verifast-26.01-linux-amd64/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'tools/vf/verifast-26.01-linux-amd64/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
 ```
 If you have MacOS on ARM, you can run the provided VeriFast binary for MacOS ARM without Docker:
 ```bash
@@ -159,7 +159,7 @@ The call should succeed nearly immediately and print `0 errors found (36 stateme
 #### Verification of the Client with KeY (Dynamic Frames)
 Run the following command to check that all the provided proofs are loadable.
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path client+key-interfaces client+key-interfaces'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path client+key-interfaces client+key-interfaces'
 ```
 The output should show 16 successfully closed proofs.
 
@@ -169,14 +169,14 @@ It is also possible to use the GUI to load and inspect the proofs, which can be 
 #### Verification of the Cell with KeY (Dynamic Frames)
 Run the following command to check that all the provided proofs are loadable.
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path key key'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path key key'
 ```
 The output should show 9 successfully closed proofs.
 
 #### Verification with Universe Encapsulation Types + KeY
 First, it should be checked that the type checker runs without any errors on the provided program:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'tools/uet-checker/checkEnc.sh universe/*.java'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'tools/uet-checker/checkEnc.sh universe/*.java'
 ```
 This runs the type checker for Universe Encapsulation Types (a stricter variant of the Universe Type system found at https://github.com/opprop/universe), and checks that the involved Java classes adhere to the Universe Encapsulation Types and schema as described in the paper.
 If everything works correctly, it prints the Java compiler version, the command used for compiling/type checking, and then no further output (type errors would reflect as compiler errors).
@@ -184,7 +184,7 @@ Note that the checker is based on the checker framework (https://checkerframewor
 
 Afterwards, for checking the functional specification load the proofs with the following command:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-UT-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path universe universe'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-UT-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path universe universe'
 ```
 Note that this runs a different KeY variant than the one used with Dynamic Frames. This variant makes use of the type and effect annotations verified correct in the first step, and exploits this information to simplify the framing proofs significantly.
 The printed output should show 15 successfully closed proofs.

@@ -49,7 +49,7 @@ Then call VeriFast directly:
 ```bash
 tools/vf/verifast-26.01-macos-aarch/bin/verifast --help
 ```
-This should print the usage messages of the corresponding tools (VeriFast, KeY, the Universe Encapsulation Types (UET) type checker, and the KeY variant for Universe Types) and thus show that they can be executed correctly.
+This should print (parts of) the help messages of the corresponding tools (VeriFast, KeY, the Universe Encapsulation Types (UET) type checker, the KeY variant for Universe Types, and citool) and thus show that they can be executed correctly.
 
 Note that the current directory is mounted into the Docker container via `-v .:/mnt/enc`, so changes outside of the container are directly in effect inside and vice versa.
 

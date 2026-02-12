@@ -1,2 +1,5 @@
 *.class
 docker/wolframpfeifer_encapsulation.tar.gz
+gen_client
+gen_key
+gen_verifast

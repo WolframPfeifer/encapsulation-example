@@ -4,7 +4,9 @@
 ./checkNoVeriFast.sh
 
 echo
-echo "Checking the VeriFast part ... "
+echo "################################################################################"
+echo "## Checking the VeriFast part ... "
+echo "################################################################################"
 arch=$(uname -i)
 
 if [ "$arch" == 'arm*' ]; then

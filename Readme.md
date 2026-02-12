@@ -169,7 +169,7 @@ docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.in
 #### Verification with Universe Encapsulation Types + KeY
 First, it should be checked that the type checker runs without any errors on the provided program:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'tools/checkEnc.sh universe/*.java'
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'tools/uet-checker/checkEnc.sh universe/*.java'
 ```
 This runs the type checker for Universe Encapsulation Types (a stricter variant of the Universe Type system found at https://github.com/opprop/universe), and checks that the involved Java classes adhere to the Universe Encapsulation Types and schema as described in the paper.
 If everything works correctly, this should print the Java compiler version, the command used for compiling/type checking, and then no further output (type errors would reflect as compiler errors).

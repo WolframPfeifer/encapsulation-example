@@ -61,7 +61,7 @@ The following workflow can be used:
 * The filled in stubs are then verified w.r.t. the verification templates (1), each with the concrete verification technique/tool chosen for it.
 * The client is verified in the technique of choice, using the verification interfaces (3).
 
-Note that at the moment, Contract-Chameleon is still a prototype and only supports export for some of the tools. Therefore, after generation of the language/tool-specific interfaces and stubs (step 3), manual changes had to be made. In the case of ... TODO
+Note that at the moment, Contract-Chameleon is still a prototype and only supports export for some of the verification tools. Due to this prototypical status, after generation of the language/tool-specific interfaces and stubs (step 3), manual changes had to be made.
 
 ## Structure of this Example
 The example consists of a client class which uses multiple data structures: A cell class (small mutable container; containing an int in this case), a linked list of cells, and a set of ints, implemented as a binary tree.
@@ -199,48 +199,44 @@ The printed output should show 15 successfully closed proofs.
 
 ## Generating Interfaces and Stubs with Contract-Chameleon
 
-TODO: section unfinished
+As mentioned above, Contract-Chameleon (https://github.com/Contract-LIB/contract-chameleon) is still a prototype with only partial support for some of our use cases.
+We used it where possible to create verification interfaces and stubs, but some changes to the output had to be made manually.
+Beware that regenerating the verification interfaces and templates might overwrite these manual changes.
 
-As mentioned above, Chameleon is still a prototype with only partial support for some of our use cases.
-The 
-Therefore, it is not included in this repo.
-However, if you want to try it out anyways, it can be found in the repository https://github.com/Contract-LIB/contract-chameleon.
-Beware that regenerating the verification interfaces and templates might overwrite manual changes that have been done there.
-In principle, no manual changes are needed, but the tool does currently not have all the features needed for this case study (such as explicit predicate families for VeriFast).
-Likewise, be careful that regenerating the stubs (*Impl.java files) overwrites all implementations and additional specifications added there by the user.
+In principle, no manual changes are needed, but the tool does currently not have all the features needed for this case study.
+Likewise, be careful that regenerating the stubs (*Impl.java files) might overwrite all implementations and additional specifications added there by the user.
+However, if you want to try it out anyways, an executable JAR can be found in the tools folder.
 
-
-### Individual Contract-Chameleon Commands
-The following lists the commands of Chameleon for the different techniques.
-
-#### Client
+### Client
 The verification interfaces for use in client verification are generated with the following commands:
 ```bash
-# This file also contains Cell, since LinkedCellList uses it ...
-gradle run --args="key-applicant contractlib/LinkedCellList.clib Cell client+key-interfaces/ICell.java"
-gradle run --args="key-applicant contractlib/LinkedCellList.clib LinkedCellList client+key-interfaces/ILinkedCellList.java"
-
-gradle run --args="key-applicant contractlib/IntTreeSet.clib IntTreeSet client+key-interfaces/IIntTreeset.java"
+# The input file LinkedCellList.clib also contains Cell, since LinkedCellList depends on it ...
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -jar tools/contract-chameleon-exe.jar key-applicant contractlib/LinkedCellList.clib -o gen_client'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -jar tools/contract-chameleon-exe.jar key-applicant contractlib/IntTreeSet.clib -o gen_client'
 ```
+This generates a folder `gen_client` with subfolders corresponding to the input files, where the generated stubs can be found.
+Note that at the moment always all the files are generated (in this case also a verification interface for `Cell.java`, it is not yet possible to filter.
+The files in `client+key-interfaces` are based on those (with a few minor changes).
 
-#### KeY:
+### KeY (Dynamic Frames variant):
 ```bash
-# This file also contains Cell, since LinkedCellList uses it ...
-# should generate: key/Cell.java key/CellImpl.java
-# note: We do not need LinkedCellList here, but it needs to be in the same file as Cell. How to select only Cell for export?
-gradle run --args="vf-provider contractlib/LinkedCellList.clib key"
+# The input file LinkedCellList.clib also contains Cell, since LinkedCellList depends on it ...
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -jar tools/contract-chameleon-exe.jar key-provider contractlib/LinkedCellList.clib -o gen_key'
 ```
+This generates among others the files `Cell.java` and `CellImpl.java` inside of `gen_key`, which are the base for the files in folder `key`.
 
-#### VeriFast
-Note that VeriFast support is very prototypical at the moment. In particular, predicate families and additional functions (defined via "fixpoint" in VeriFast) are not supported at the moment.
+### VeriFast
 Generate the verification stubs and templates for VeriFast:
 ```bash
-# This file also contains Cell, since LinkedCellList uses it ...
-gradle run --args="vf-provider contractlib/LinkedCellList.clib verifast"
-gradle run --args="vf-provider contractlib/LinkedCellList.clib verifast"
+# The input file LinkedCellList.clib also contains Cell, since LinkedCellList depends on it ...
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -jar tools/contract-chameleon-exe.jar verifast-provider contractlib/LinkedCellList.clib -o gen_verifast'
+docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'java -jar tools/contract-chameleon-exe.jar verifast-applicant contractlib/LinkedCellList.clib -o gen_verifast'
 ```
+The first command creates (among others) `LinkedCellList.java` and `LinkedCellListImpl.java` in the folder `gen_verifast`, the second one `Cell.javaspec`, which are the base for the corresponding files in the example.
 
-#### KeY + Universe Encapsulation Types
+Note that VeriFast support is very prototypical at the moment, so the files had to be edited by hand quite a bit. In particular, predicate families and additional functions (defined via "fixpoint" in VeriFast) are not supported at the moment.
+
+### KeY + Universe Encapsulation Types
 Support for the UET variant of KeY is not yet implemented, but ongoing work.
 
 # Support

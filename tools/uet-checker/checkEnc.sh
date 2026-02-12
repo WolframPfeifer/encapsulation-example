@@ -5,7 +5,7 @@ SCRIPT_FILE="$(realpath "$0")"
 MYDIR="$(dirname "$SCRIPT_FILE")"
 
 # Dependencies
-export CLASSPATH="$MYDIR/uet-checker/checker-3.42.0-eisop3.jar:$MYDIR/uet-checker/checker-qual-3.42.0-eisop3.jar:$MYDIR/uet-checker/checker-util-3.42.0-eisop3.jar:$MYDIR/uet-checker/universe-encapsulation-checker.jar:$CLASSPATH"
+export CLASSPATH="$MYDIR/checker-3.42.0-eisop3.jar:$MYDIR/checker-qual-3.42.0-eisop3.jar:$MYDIR/checker-util-3.42.0-eisop3.jar:$MYDIR/universe-encapsulation-checker.jar:$CLASSPATH"
 
 #echo
 #echo $CLASSPATH

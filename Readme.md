@@ -4,13 +4,13 @@ This is the artifact for the FM 2026 paper "A Framework for the Interoperable Sp
 
 For each tool, scripts/commands are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the involved verification tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a Docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1GB of RAM (tested with `docker run -m 1g --memory-swap 1g --cpus=1`), and should need about 4 min for checking all the proofs.
 
-The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed to build Linux ARM binaries). However, everything except for VeriFast can be run also through our docker container for ARM, and ARM binaries for Mac exist for VeriFast and might be used (without Docker).
+The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed to build Linux ARM binaries). However, everything except for VeriFast can be run also through our docker container for ARM, and ARM binaries for MacOS exist for VeriFast and might be used (without Docker).
 We apply for the following badges: Artifacts Evaluated Level 2 (Functional and Reusable), Artifacts Available
 
 ## Requirements
 For the full proof replay, a machine with an amd64 architecture is needed.
 The reason is that binaries for VeriFast are not available for Linux ARM (we invested some effort to try to build it our own, but did not succeed).
-If you have a Mac with ARM, it should still be possible to run the corresponding binaries (included in the artifact) directly without the docker container.
+If you have a MacOS on ARM, it should still be possible to run the corresponding binaries (included in the artifact) directly without the docker container.
 Other operating systems on ARM are not supported.
 
 ## Installation and Smoke Tests
@@ -25,12 +25,12 @@ Make sure that Docker is installed:
 Make sure that you are in the directory of the artifact (where this Readme is located).
 Run the following command:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTests.sh
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTest.sh
 ```
 
-If you have a Mac on ARM, run:
+If you have a MacOS on ARM, run:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTestsNoVeriFast.sh
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./smokeTestNoVeriFast.sh
 ```
 Then call VeriFast directly:
 ```bash
@@ -112,6 +112,7 @@ Files in the artifact:
 
 ### Involved Tools
 The tools can be found as binaries/JARs in the `tools` folder.
+
 * KeY (default Dynamic Frames version)
 * KeY (UET version)
 * citool (provides a commandline interface for the GUI tool KeY)
@@ -127,7 +128,7 @@ Make sure that the current location is the main directory of the artifact and ru
 docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./check.sh
 ```
 
-On Mac ARM (run everything except for VeriFast through Docker:
+On MacOS ARM (run everything except for VeriFast through Docker:
 ```bash
 docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation ./checkNoVeriFast.sh
 tools/vf/verifast-26.01-macos-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc
@@ -141,16 +142,18 @@ For experimenting and understanding, this section explains how each individual t
 Run VeriFast on the provided file to check all assertions/contracts to (re-)verify the class `IntTreeSet` (and its nested data structure class `TreeNode`).
 With amd64 architecture:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation '/tools/verifast-26.01-linux-amd64/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'tools/vf/verifast-26.01-linux-amd64/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
 ```
-If you have Mac ARM, you can run the provided VeriFast binary for Mac ARM without Docker:
+If you have MacOS on ARM, you can run the provided VeriFast binary for MacOS ARM without Docker:
 ```bash
-'/tools/verifast-26.01-mac-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
+'tools/vf/verifast-26.01-macos-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
 ```
 We run verifast with the following options:
+
 * `-c` to only do the compilation and verification, and skip the linking phase
 * `-allow_dead_code` to skip checks for dead code, since some of the methods are not called
 * `-shared` to mark that we verify a library and no main method is required
+
 The call should succeed nearly immediately and print `0 errors found (36 statements verified)`.
 
 #### Verification of the Client with KeY (Dynamic Frames)
@@ -158,13 +161,17 @@ Run the following command to check that all the provided proofs are loadable.
 ```bash
 docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path client+key-interfaces client+key-interfaces'
 ```
-We are using citool (https://github.com/wadoon/key-citool) as a clean CLI for KeY, which is primarily a GUI tool.
+The output should show 16 successfully closed proofs.
+
+Note: We are using citool (https://github.com/wadoon/key-citool) as a clean CLI for KeY, which is primarily a GUI tool.
+It is also possible to use the GUI to load and inspect the proofs, which can be done by running the GUI of KeY without Docker (`java -jar tools/key-2.12.4-dev-exe.jar`) and manually selecting the proof to load via the menu.
 
 #### Verification of the Cell with KeY (Dynamic Frames)
 Run the following command to check that all the provided proofs are loadable.
 ```bash
 docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path key key'
 ```
+The output should show 9 successfully closed proofs.
 
 #### Verification with Universe Encapsulation Types + KeY
 First, it should be checked that the type checker runs without any errors on the provided program:
@@ -172,14 +179,15 @@ First, it should be checked that the type checker runs without any errors on the
 docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'tools/uet-checker/checkEnc.sh universe/*.java'
 ```
 This runs the type checker for Universe Encapsulation Types (a stricter variant of the Universe Type system found at https://github.com/opprop/universe), and checks that the involved Java classes adhere to the Universe Encapsulation Types and schema as described in the paper.
-If everything works correctly, this should print the Java compiler version, the command used for compiling/type checking, and then no further output (type errors would reflect as compiler errors).
-Note that the checker is based on the checker framework and runs as an annotation processor during compilation with `javac`, and as a side effect the Java files are also compiled. However, in this verification project, we do not need the .class files.
+If everything works correctly, it prints the Java compiler version, the command used for compiling/type checking, and then no further output (type errors would reflect as compiler errors).
+Note that the checker is based on the checker framework (https://checkerframework.org/) and runs as an annotation processor during compilation with `javac`, and as a side effect the Java files are also compiled. However, in this verification project, we do not need the .class files.
 
 Afterwards, for checking the functional specification load the proofs with the following command:
 ```bash
-docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-UT-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path key key'
+docker run -v .:/mnt/encapsulation wolframpfeifer/encapsulation 'java -Dslf4j.internal.verbosity=ERROR -Dlogback.configurationFile=tools/disablelogging.xml -cp "tools/key-2.12.4-UT-dev-exe.jar:tools/citool-1.7.0-SNAPSHOT-mini.jar" io.github.wadoon.keycitool.CheckerKt -v --proof-path universe universe'
 ```
 Note that this runs a different KeY variant than the one used with Dynamic Frames. This variant makes use of the type and effect annotations verified correct in the first step, and exploits this information to simplify the framing proofs significantly.
+The printed output should show 15 successfully closed proofs.
 
 ## Generating Interfaces and Stubs with Contract-Chameleon
 

@@ -1,9 +1,6 @@
 name: container build
 
-on:
-  push:
-    branches: [main, docker]
-  workflow_dispatch:
+on: workflow_dispatch
 
 env:
   REGISTRY_IMAGE: wolframpfeifer/encapsulation

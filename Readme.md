@@ -1,12 +1,12 @@
 # A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures (Artifact)
 
-This is the artifact for the FM 2026 paper "A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures" by Wolfram Pfeifer, Werner Dietl, and Mattias Ulbrich. It contains the example project described in the paper, which consists of a Java client using three libraries (Cell, LinkedCellList, and IntTreeSet), verified cooperatively with the tools KeY (standard variant using Dynamic Frames), VeriFast, and a Universe Type Checker plus KeY (special variant using Universe Types). The artifact provides the source code of the example, specifications in the different involved languages, as well as proofs which can be reloaded (if the specific verification tool supports that).
+This is the artifact for the FM 2026 paper "A Framework for the Interoperable Specification and Verification of Encapsulated Data Structures" by Wolfram Pfeifer, Werner Dietl, and Mattias Ulbrich. It contains the example project described in the paper, which consists of a Java client using three libraries (Cell, LinkedCellList, and IntTreeSet), verified cooperatively with the tools KeY (standard variant using Dynamic Frames), VeriFast, and a Universe Type Checker plus KeY (special variant using Universe Types). The artifact provides the source code of the example, specifications in the different involved languages, as well as proofs that can be reloaded (if the specific verification tool supports that).
 
 ## Requirements
 
-The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed to build Linux ARM binaries). However, everything except for VeriFast can be run also through our Docker container for ARM, and MacOS ARM binaries for VeriFast are included in the artifact and might be used (without Docker). Other operating systems on ARM are not supported.
+The full proof replay with the Docker container requires a machine with an amd64 architecture, since the involved tool VeriFast does not provide ARM binaries (despite quite some effort, we did not succeed in building Linux ARM binaries). However, everything except for VeriFast can be run also through our Docker container for ARM, and macOS ARM binaries for VeriFast are included in the artifact and might be used (without Docker). Other operating systems on ARM are not supported.
 
-For each involved verification tool, scripts/commands are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a Docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1GB of RAM (tested with `docker run -m 1g --memory-swap 1g --cpus=1`), and should need about 4 min for checking all the proofs.
+For each involved verification tool, scripts/commands are provided to reload/check the corresponding proofs. Java 21 or newer is needed by the tools (both KeY variants, Universe Type Checker, and citool), while VeriFast needs the package libgomp1 apart from those that are installed in a minimal Ubuntu 24.04 distribution. For convenience, we provide a Docker image that can be used to run the tools. The proof replay runs on any standard machine with at least 1 GB of RAM (tested with `docker run -m 1g --memory-swap 1g --cpus=1`), and should need about 4 min for checking all the proofs.
 
 ### Involved Tools
 
@@ -14,7 +14,7 @@ The tools can be found as binaries/JARs in the `tools` folder.
 
 * KeY (default Dynamic Frames version; https://github.com/KeYProject/key)
 * KeY (special variant using Universe Encapsulation Types; https://github.com/KeYProject/key/tree/pfeifer/universeEncapsulation)
-* citool (provides a commandline interface for the GUI tool KeY; https://github.com/wadoon/key-citool)
+* citool (provides a command-line interface for the GUI tool KeY; https://github.com/wadoon/key-citool)
 * VeriFast (https://github.com/verifast/verifast)
 * Checker for Universe Encapsulation Types (implemented in the EISOP Checker Framework; https://github.com/WolframPfeifer/universe/tree/pfeifer/encapsulation)
 * Contract-Chameleon (for generating interfaces and stubs from the Contract-LIB specification; https://github.com/Contract-LIB/contract-chameleon)
@@ -41,7 +41,7 @@ The smoke tests can be run using the following command:
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./smokeTest.sh
 ```
 
-If you have a MacOS on ARM, run:
+If you have macOS on ARM, run:
 ```bash
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./smokeTestNoVeriFast.sh
 ```
@@ -51,11 +51,11 @@ tools/vf/verifast-26.01-macos-aarch/bin/verifast --help
 ```
 This should print (parts of) the help messages of the corresponding tools (VeriFast, KeY, the Universe Encapsulation Types (UET) type checker, the KeY variant for Universe Types, and citool) and thus show that they can be executed correctly.
 
-Note that the current directory is mounted into the Docker container via `-v .:/mnt/enc`, so changes outside of the container are directly in effect inside and vice versa.
+Note that the current directory is mounted into the Docker container via `-v .:/mnt/enc`, so changes outside the container are directly in effect inside and vice versa.
 
 ## Workflow of the Cooperative Verification Technique
 
-Our technique is applicable to verify programs where a client uses multiple data structures which are encapsulated (a precise formal definition of this notion is given in the paper).
+Our technique is applicable to verify programs where a client uses multiple data structures that are encapsulated (a precise formal definition of this notion is given in the paper).
 The following workflow can be used:
 
 * The user provides abstract specifications of the functionality of the data structure classes in the language Contract-LIB.
@@ -63,7 +63,7 @@ The following workflow can be used:
 * The tool Contract-Chameleon is used to generate the following files for each data structure:
     1. a verification template with the interface and the specification of the data structure to be proven (depending on the technique that should be used for verification of that data structure)
     2. a verification stub (classes inheriting from the template from (1)), where the user needs to fill in implementation and additional specification (such as coupling invariants/predicates, loop invariants, ...)
-    3. a verification interface containing the necessary specification to use the data structure for verification in the client (depending on the technique that should be used for verifying the client), or for the use in other verification templates
+    3. a verification interface containing the necessary specification to use the data structure for verification in the client (depending on the technique that should be used for verifying the client) or for use in other verification templates
 * The filled-in stubs are then verified w.r.t. the verification templates (1), each with the concrete verification technique/tool chosen for it.
 * The client is verified in the technique of choice, using the verification interfaces (3).
 
@@ -71,7 +71,7 @@ Note that at the moment, Contract-Chameleon is still a prototype and only suppor
 
 ## Structure of this Example
 
-The example consists of a client class which uses multiple data structures: A cell class (small mutable container; containing an int in this case), a linked list of cells, and a set of ints, implemented as a binary tree.
+The example consists of a client class that uses multiple data structures: a cell class (small mutable container; containing an int in this case), a linked list of cells, and a set of ints, implemented as a binary tree.
 Verification is conducted cooperatively with three different tools: VeriFast, KeY, and a type checker for Universe Encapsulation Types (a variant of the Universe Type System) implemented in the Checker Framework.
 
 The different variants of the source files and specifications for each verification tool can be found in the correspondingly named subfolders.
@@ -79,50 +79,53 @@ The different variants of the source files and specifications for each verificat
 Files in the artifact:
 ```
 * client+key-interfaces
-    * Client.java                       (Client implementation, main verification target)
-    * Cell.java                         (verification interface for class Cell)
-    * IntTreeSet.java                   (verification interface for class IntTreeSet)
-    * LinkedCellList.java               (verification interface for class LinkedCellList)
-    * *.proof                           (KeY proof of the Client, uses the verification interfaces)
+    * Client.java                           (client implementation, main verification target)
+    * Cell.java                             (verification interface for class Cell)
+    * IntTreeSet.java                       (verification interface for class IntTreeSet)
+    * LinkedCellList.java                   (verification interface for class LinkedCellList)
+    * *.proof                               (KeY proof of the client, uses the verification interfaces)
 * contractlib
-    * LinkedCellList.clib               (abstract specification of Cell and LinkedCellList)
-    * IntTreeSet.clib                   (abstract specification of IntTreeSet)
+    * LinkedCellList.clib                   (abstract specification of Cell and LinkedCellList)
+    * IntTreeSet.clib                       (abstract specification of IntTreeSet)
 * docker
-    * Dockerfile                        (file for building Docker container that can be used to run the tools for proof checking)
+    * Dockerfile                            (file for building the Docker image)
+    * wolframpfeifer_encapsulation.tar.gz   (docker image for running the proof checking tools)
 * key
-    * Cell.java                         (verification template for Cell, contains specs)
-    * CellImpl.java                     (verification stub, filled in by the user with implementation and additional specification)
-    * *.proof                           (KeY proofs that CellImpl adheres to specs in Cell)
+    * Cell.java                             (verification template for Cell, contains specs)
+    * CellImpl.java                         (verification stub, filled in by the user with implementation and additional specification)
+    * *.proof                               (KeY proofs that CellImpl adheres to specs in Cell)
 * universe
-    * qual                              (contains definitions of the UET annotations, used by KeY for parsing)
+    * qual                                  (contains definitions of the UET annotations, used by KeY for parsing)
         * Any.java
         * Payload.java
         * Rep.java
         * ...
-    * IntTreeSet.java                   (verification template for IntTreeSet, contains specs)
-    * IntTreeSetImpl.java               (verification stub, filled in by the user with implementation and additional specification)
-    * TreeNode.java                     (used internally by IntTreeSetImpl as part of the set implementation)
-    * *.proof                           (KeY proofs that CellImpl adheres to specs in Cell)
+    * IntTreeSet.java                       (verification template for IntTreeSet, contains specs)
+    * IntTreeSetImpl.java                   (verification stub, filled in by the user with implementation and additional specification)
+    * TreeNode.java                         (used internally by IntTreeSetImpl as part of the set implementation)
+    * *.proof                               (KeY proofs that CellImpl adheres to specs in Cell)
 * verifast
-    * LinkedCellList.java               (verification template for LinkedCellList, contains specs)
-    * LinkedCellListImpl.java           (verification stub, filled in by the user with implementation and additional specification)
-    * Cell.javaspec                     (verification interface for class Cell)
-    * cell.jarspec                      ("bundle" for the specification of Cell, needed by VeriFast when referring to javaspec files)
-    * sources.jarsrc                    (entry file for verification with VeriFast)
+    * LinkedCellList.java                   (verification template for LinkedCellList, contains specs)
+    * LinkedCellListImpl.java               (verification stub, filled in by the user with implementation and additional specification)
+    * Cell.javaspec                         (verification interface for class Cell)
+    * cell.jarspec                          ("bundle" for the specification of Cell, needed by VeriFast when referring to javaspec files)
+    * sources.jarsrc                        (entry file for verification with VeriFast)
 * tools
-    * key-2.12.4-dev-exe.jar            (KeY build using Dynamic Frames)
-    * key-2.12.4-UT-dev-exe.jar         (KeY build using Universe Encapsulation Types)
-    * citool-1.7.0-SNAPSHOT-mini.jar    (tool that provides a CLI for KeY)
+    * key-2.12.4-dev-exe.jar                (KeY build using Dynamic Frames)
+    * key-2.12.4-UT-dev-exe.jar             (KeY build using Universe Encapsulation Types)
+    * citool-1.7.0-SNAPSHOT-mini.jar        (tool that provides a CLI for KeY)
+    * contract-chameleon-exe.jar            (Contract-Chameleon for generating interfaces and stubs from Contract-LIB specifications)
     * uet-checker
-        * checkEnc.sh                   (script to run the UET checker)
+        * checkEnc.sh                       (script to run the UET checker)
         * ...
     * vf
-        * verifast-26.01-linux-amd64    (binaries and runtime files for VeriFast, runnable on Linux amd64)
-        * verifast-26.01-macos-aarch    (binaries and runtime files for VeriFast, runnable on MacOS ARM)
-    (verifast binary)
-* check.sh                              (top-level check script loading all proofs / re-running all the verifiers)
-* check*.sh                             (individual sub-scripts for the techniques used)
-* Readme.md                             (this file)
+        * verifast-26.01-linux-amd64        (binaries and runtime files for VeriFast, runnable on Linux amd64)
+        * verifast-26.01-macos-aarch        (binaries and runtime files for VeriFast, runnable on MacOS ARM)
+* check.sh                                  (top-level check script loading all proofs / re-running all the verifiers)
+* checkNoVeriFast.sh                        (script for checking everything except for VeriFast proofs)
+* smokeTests.sh                             (script for running smoke tests)
+* smokeTestNoVeriFast.sh                    (script for running smoke tests w/o VeriFast)
+* Readme.md                                 (this file)
 ```
 
 ## Replaying/Checking the Proofs
@@ -133,7 +136,7 @@ Make sure that the current location is the main directory of the artifact and ru
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./check.sh
 ```
 
-On MacOS ARM run everything except for VeriFast through Docker:
+On macOS ARM, run everything except for VeriFast through Docker:
 ```bash
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation ./checkNoVeriFast.sh
 tools/vf/verifast-26.01-macos-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc
@@ -150,13 +153,13 @@ With amd64 architecture:
 ```bash
 docker run -v .:/mnt/enc wolframpfeifer/encapsulation 'tools/vf/verifast-26.01-linux-amd64/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc'
 ```
-If you have MacOS on ARM, you can run the provided VeriFast binary for MacOS ARM without Docker:
+If you have macOS on ARM, you can run the provided VeriFast binary for macOS ARM without Docker:
 ```bash
 tools/vf/verifast-26.01-macos-aarch/bin/verifast -c -allow_dead_code -shared verifast/sources.jarsrc
 ```
-We run verifast with the following options:
+We run VeriFast with the following options:
 
-* `-c` to only do the compilation and verification, and skip the linking phase
+* `-c` to only do the compilation and verification and skip the linking phase
 * `-allow_dead_code` to skip checks for dead code, since some of the methods are not called
 * `-shared` to mark that we verify a library and no main method is required
 

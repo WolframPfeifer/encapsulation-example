@@ -1,6 +1,6 @@
 package example;
 
-/*@ predicate payload(Object o); @*/
+/*@ predicate payload(Object o;); @*/
 
 /*@ fixpoint list<T> addEnd<T>(T val, list<T> ll) {
       switch(ll) {
@@ -18,22 +18,22 @@ package example;
     }
 @*/
 
-//@ predicate_family llist(Class c)(LinkedCellList l, list<Cell> xs);
-
 public abstract class LinkedCellList {
+    //@ predicate llist(list<Cell> xs);
+
     public static LinkedCellList init()
         //@ requires true;
-        //@ ensures llist(result.getClass())(result, ?result_absVal) &*& result_absVal == nil &*& result != null;
+        //@ ensures result.llist(?result_absVal) &*& result_absVal == nil &*& result != null;
     {
         Cell c = Cell.init();
         return new LinkedCellListImpl();
     }
 
     public abstract void add(Cell v);
-        //@ requires llist(this.getClass())(this, ?l_old) &*& [_]payload(v);
-        //@ ensures llist(this.getClass())(this, ?l) &*& l == addEnd(v, l_old);
+        //@ requires llist(?l_old) &*& [_]payload(v);
+        //@ ensures llist(?l) &*& l == addEnd(v, l_old);
 
     public abstract Cell getLast();
-        //@ requires llist(this.getClass())(this, ?l_old) &*& !(l_old == nil);
-        //@ ensures llist(this.getClass())(this, l_old) &*& result == last(l_old) &*& [_]payload(result);
+        //@ requires llist(?l_old) &*& !(l_old == nil);
+        //@ ensures llist(l_old) &*& result == last(l_old) &*& [_]payload(result);
 }
